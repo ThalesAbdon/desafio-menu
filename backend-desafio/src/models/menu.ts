@@ -8,7 +8,7 @@ interface IMenu {
 
 const schema = new Schema<IMenu>({
     name: { type: String, required: true, unique: true },
-    relatedId: { type: String },
+    relatedId: { type: String, index: true },
 })
 
 export default model<IMenu>('menu', schema, 'menus')
