@@ -3,13 +3,11 @@ import mongoose from 'mongoose'
 import { Request, Response, NextFunction } from 'express'
 
 export default {
-    upsert: async (req: Request, res: Response, next: NextFunction) => {
+    create: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const schema = yup.object().shape({
-                name: yup.string().required().min(3),
-                email: yup.string().email().required().min(5),
-                password: yup.string().required().min(6),
-                dob: yup.date(),
+                name: yup.string().required().min(1),
+                relatedId: yup.string(),
             })
 
             await schema.validate(req.body, { abortEarly: false })
