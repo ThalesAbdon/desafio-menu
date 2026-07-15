@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 import mongoose from 'mongoose'
 
-import userRoutes from './routes/user'
+import menuRoutes from './routes/menu'
 
 const HOST = process.env.HOST || 'https://localhost'
 const PORT = process.env.PORT || 8000
@@ -22,7 +22,7 @@ mongoose.connect(
 
 const app = express()
 app.use(express.json())
-app.use('/user', userRoutes)
+app.use('/api/v1/menu', menuRoutes)
 app.listen(PORT, () => {
     console.log(`${LOGMSG} Server is running at ${HOST}:${PORT}`)
 })
