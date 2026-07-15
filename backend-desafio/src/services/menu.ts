@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import Menu from '../models/menu'
 
 interface MenuNode {
@@ -6,7 +7,16 @@ interface MenuNode {
     submenus?: MenuNode[]
 }
 
-const buildTree = (items: any[], parentId: string | null = null): MenuNode[] =>
+interface FlatMenuItem {
+    _id: any
+    name: string
+    relatedId?: string | null
+}
+
+export const buildTree = (
+    items: FlatMenuItem[],
+    parentId: string | null = null,
+): MenuNode[] =>
     items
         .filter((item) => (item.relatedId ?? null) === parentId)
         .map((item) => {
@@ -16,7 +26,10 @@ const buildTree = (items: any[], parentId: string | null = null): MenuNode[] =>
             return node
         })
 
-const collectDescendantIds = (items: any[], parentId: string): string[] =>
+export const collectDescendantIds = (
+    items: FlatMenuItem[],
+    parentId: string,
+): string[] =>
     items
         .filter((item) => String(item.relatedId) === String(parentId))
         .reduce((ids: string[], child) => {
@@ -26,6 +39,14 @@ const collectDescendantIds = (items: any[], parentId: string): string[] =>
 
 export default {
     create: async (data: { name: string; relatedId?: string }) => {
+        if (data.relatedId) {
+            if (!mongoose.Types.ObjectId.isValid(data.relatedId))
+                throw new Error('PARENT_NOT_FOUND')
+
+            const parentExists = await Menu.exists({ _id: data.relatedId })
+            if (!parentExists) throw new Error('PARENT_NOT_FOUND')
+        }
+
         try {
             const menu = await Menu.create(data)
             return { id: menu._id }
@@ -39,7 +60,7 @@ export default {
         if (!menu) return null
 
         const items = await Menu.find().lean()
-        const descendantIds = collectDescendantIds(items, id)
+        const descendantIds = collectDescendantIds(items as FlatMenuItem[], id)
 
         await Menu.deleteMany({ _id: { $in: [id, ...descendantIds] } })
 
@@ -47,6 +68,6 @@ export default {
     },
     getAll: async () => {
         const items = await Menu.find().lean()
-        return buildTree(items)
+        return buildTree(items as FlatMenuItem[])
     },
 }

@@ -9,6 +9,10 @@ export default {
         } catch (err: any) {
             if (err.message === 'DUPLICATE_NAME')
                 return res.status(400).json({ message: 'Name must be unique' })
+            if (err.message === 'PARENT_NOT_FOUND')
+                return res
+                    .status(400)
+                    .json({ message: 'relatedId does not reference an existing item' })
             throw err
         }
     },
