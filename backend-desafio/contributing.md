@@ -3,7 +3,7 @@
 - Certifique-se que tem as dependências [npm](https://www.npmjs.com/) (>= 6.x) e [Node.js](https://nodejs.org/) (>= 14.x) instaladas localmente.
 - Este projeto utiliza Node.js com [Typescript](https://www.typescriptlang.org/).
 - Tenha uma conexão com um banco de dados [MongoDB](https://www.mongodb.com/).
-- Disponibilizamos duais coleções prontas localizadas na pasta `/api_clients` para importar no [Insomnia](https://insomnia.rest/) e no [Postman](https://www.postman.com/) para realizar os testes, porém sinta-se à vontade para utilizar qualquer plataforma de cliente de API que preferir.
+- Disponibilizamos duas coleções prontas localizadas na pasta `/api_clients` para importar no [Insomnia](https://insomnia.rest/) e no [Postman](https://www.postman.com/) para realizar os testes, porém sinta-se à vontade para utilizar qualquer plataforma de cliente de API que preferir.
 - Crie um arquivo `.env` na raíz do projeto e copie os conteúdos do arquivo `.env.example`. Qualquer variável de ambiente utilizada deve ser declarada neste arquivo e chamada no projeto através do comando `process.env` (ex. `process.env.MONGO_URL`).
 - Preencha a URL de conexão ao seu banco do MongoDB na primeira linha o arquivo `.env`.
 - Na raíz, instale o restante das dependências do projeto através do comando `npm install`.
