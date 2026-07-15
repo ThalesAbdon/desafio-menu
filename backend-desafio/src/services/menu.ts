@@ -16,6 +16,14 @@ const buildTree = (items: any[], parentId: string | null = null): MenuNode[] =>
             return node
         })
 
+const collectDescendantIds = (items: any[], parentId: string): string[] =>
+    items
+        .filter((item) => String(item.relatedId) === String(parentId))
+        .reduce((ids: string[], child) => {
+            const childId = child._id.toString()
+            return [...ids, childId, ...collectDescendantIds(items, childId)]
+        }, [])
+
 export default {
     create: async (data: { name: string; relatedId?: string }) => {
         try {
@@ -30,7 +38,11 @@ export default {
         const menu = await Menu.findOne({ _id: id })
         if (!menu) return null
 
-        await Menu.deleteOne({ _id: menu._id })
+        const items = await Menu.find().lean()
+        const descendantIds = collectDescendantIds(items, id)
+
+        await Menu.deleteMany({ _id: { $in: [id, ...descendantIds] } })
+
         return { id: menu._id }
     },
     getAll: async () => {
