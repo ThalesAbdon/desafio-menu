@@ -75,6 +75,18 @@ describe('buildTree', () => {
             { id: '3', name: 'LCD', submenus: [{ id: '4', name: '110' }] },
         ])
     })
+
+    it('treats an empty-string relatedId as a root-level item (regression)', () => {
+        const items = [
+            { _id: '1', name: 'Eletrodomésticos' },
+            { _id: '2', name: 'LCDDA', relatedId: '' },
+        ]
+
+        expect(buildTree(items)).toEqual([
+            { id: '1', name: 'Eletrodomésticos' },
+            { id: '2', name: 'LCDDA' },
+        ])
+    })
 })
 
 describe('collectDescendantIds', () => {

@@ -7,10 +7,12 @@ export default {
         try {
             const schema = yup.object().shape({
                 name: yup.string().required().min(1),
-                relatedId: yup.string(),
+                relatedId: yup
+                    .string()
+                    .transform((value) => (value === '' ? undefined : value)),
             })
 
-            await schema.validate(req.body, { abortEarly: false })
+            req.body = await schema.validate(req.body, { abortEarly: false })
             return next()
         } catch (err) {
             const { errors } = err as yup.ValidationError

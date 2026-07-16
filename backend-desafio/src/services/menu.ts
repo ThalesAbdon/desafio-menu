@@ -17,7 +17,7 @@ const buildChildrenMap = (items: FlatMenuItem[]) => {
     const childrenMap = new Map<string | null, FlatMenuItem[]>()
 
     for (const item of items) {
-        const parentId = item.relatedId ?? null
+        const parentId = item.relatedId || null
 
         if (!childrenMap.has(parentId)) {
             childrenMap.set(parentId, [])
@@ -68,16 +68,18 @@ export const collectDescendantIds = (
 
 export default {
     create: async (data: { name: string; relatedId?: string }) => {
-        if (data.relatedId) {
-            if (!mongoose.Types.ObjectId.isValid(data.relatedId))
+        const relatedId = data.relatedId?.trim() || undefined
+
+        if (relatedId) {
+            if (!mongoose.Types.ObjectId.isValid(relatedId))
                 throw new Error('PARENT_NOT_FOUND')
 
-            const parentExists = await Menu.exists({ _id: data.relatedId })
+            const parentExists = await Menu.exists({ _id: relatedId })
             if (!parentExists) throw new Error('PARENT_NOT_FOUND')
         }
 
         try {
-            const menu = await Menu.create(data)
+            const menu = await Menu.create({ name: data.name, relatedId })
             return { id: menu._id }
         } catch (err: any) {
             if (err.code === 11000) throw new Error('DUPLICATE_NAME')
