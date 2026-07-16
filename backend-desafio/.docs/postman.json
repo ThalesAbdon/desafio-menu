@@ -1,12 +1,12 @@
 {
 	"info": {
 		"_postman_id": "53d3253c-6861-4874-9b25-15069e2e2965",
-		"name": "Live-Coding BoilerPlate",
+		"name": "Desafio Menu",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "User",
+			"name": "Menu",
 			"item": [
 				{
 					"name": "Create",
@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"user 1\",\n\t\"email\": \"user@paketa.com.br\",\n\t\"password\": \"paketa123!\",\n\t\"dob\": \"2020-10-02\"\n}",
+							"raw": "{\n\t\"name\": \"Eletrodomésticos\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,31 +23,31 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/user",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"user"
-							]
+							"raw": "{{url}}/api/v1/menu",
+							"host": ["{{url}}"],
+							"path": ["api", "v1", "menu"]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get one",
+					"name": "Create (with relatedId)",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Televisores\",\n\t\"relatedId\": \"COLE_O_ID_DO_ITEM_PAI_AQUI\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/user/6213814b8fa7b098be2fa480",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"user",
-								"6213814b8fa7b098be2fa480"
-							]
+							"raw": "{{url}}/api/v1/menu",
+							"host": ["{{url}}"],
+							"path": ["api", "v1", "menu"]
 						}
 					},
 					"response": []
@@ -58,40 +58,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/user",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"user 2\",\n\t\"email\": \"user@paketa.com.br\",\n\t\"password\": \"paketa123!\",\n\t\"dob\": \"2020-10-02\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/user/6213814b8fa7b098be2fa480",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"user",
-								"6213814b8fa7b098be2fa480"
-							]
+							"raw": "{{url}}/api/v1/menu",
+							"host": ["{{url}}"],
+							"path": ["api", "v1", "menu"]
 						}
 					},
 					"response": []
@@ -102,14 +71,27 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/user/6213814b8fa7b098be2fa480",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"user",
-								"6213814b8fa7b098be2fa480"
-							]
+							"raw": "{{url}}/api/v1/menu/6213814b8fa7b098be2fa480",
+							"host": ["{{url}}"],
+							"path": ["api", "v1", "menu", "6213814b8fa7b098be2fa480"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/health",
+							"host": ["{{url}}"],
+							"path": ["health"]
 						}
 					},
 					"response": []
@@ -120,21 +102,11 @@
 	"event": [
 		{
 			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
+			"script": { "type": "text/javascript", "exec": [""] }
 		},
 		{
 			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
+			"script": { "type": "text/javascript", "exec": [""] }
 		}
 	],
 	"variable": [
