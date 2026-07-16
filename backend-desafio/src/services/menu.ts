@@ -8,34 +8,63 @@ interface MenuNode {
 }
 
 interface FlatMenuItem {
-    _id: any
+    _id: string | mongoose.Types.ObjectId
     name: string
     relatedId?: string | null
 }
 
-export const buildTree = (
-    items: FlatMenuItem[],
-    parentId: string | null = null,
-): MenuNode[] =>
-    items
-        .filter((item) => (item.relatedId ?? null) === parentId)
-        .map((item) => {
-            const node: MenuNode = { id: item._id.toString(), name: item.name }
-            const children = buildTree(items, item._id.toString())
-            if (children.length) node.submenus = children
+const buildChildrenMap = (items: FlatMenuItem[]) => {
+    const childrenMap = new Map<string | null, FlatMenuItem[]>()
+
+    for (const item of items) {
+        const parentId = item.relatedId ?? null
+
+        if (!childrenMap.has(parentId)) {
+            childrenMap.set(parentId, [])
+        }
+
+        childrenMap.get(parentId)!.push(item)
+    }
+
+    return childrenMap
+}
+
+export const buildTree = (items: FlatMenuItem[]): MenuNode[] => {
+    const childrenMap = buildChildrenMap(items)
+
+    const build = (parentId: string | null): MenuNode[] =>
+        (childrenMap.get(parentId) ?? []).map((item) => {
+            const node: MenuNode = {
+                id: item._id.toString(),
+                name: item.name,
+            }
+
+            const children = build(item._id.toString())
+
+            if (children.length) {
+                node.submenus = children
+            }
+
             return node
         })
+
+    return build(null)
+}
 
 export const collectDescendantIds = (
     items: FlatMenuItem[],
     parentId: string,
-): string[] =>
-    items
-        .filter((item) => String(item.relatedId) === String(parentId))
-        .reduce((ids: string[], child) => {
+): string[] => {
+    const childrenMap = buildChildrenMap(items)
+
+    const collect = (id: string): string[] =>
+        (childrenMap.get(id) ?? []).flatMap((child) => {
             const childId = child._id.toString()
-            return [...ids, childId, ...collectDescendantIds(items, childId)]
-        }, [])
+            return [childId, ...collect(childId)]
+        })
+
+    return collect(parentId)
+}
 
 export default {
     create: async (data: { name: string; relatedId?: string }) => {
@@ -55,6 +84,7 @@ export default {
             throw err
         }
     },
+
     delete: async (id: string) => {
         const menu = await Menu.findOne({ _id: id })
         if (!menu) return null
@@ -66,6 +96,7 @@ export default {
 
         return { id: menu._id }
     },
+
     getAll: async () => {
         const items = await Menu.find().lean()
         return buildTree(items as FlatMenuItem[])

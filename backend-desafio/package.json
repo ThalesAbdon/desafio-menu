@@ -1,7 +1,7 @@
 {
-  "name": "live-coding-boiler-plate",
+  "name": "desafio-menu",
   "version": "1.0.0",
-  "description": "",
+  "description": "REST API for hierarchical menu management.",
   "main": "src/index.ts",
   "scripts": {
     "test": "jest",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paketacredito/live-coding-boiler-plate.git"
+    "url": "git+https://github.com/ThalesAbdon/desafio-menu.git"
   },
-  "author": "",
+  "author": "Thales Abdon",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/paketacredito/live-coding-boiler-plate/issues"
+    "url": "https://github.com/ThalesAbdon/desafio-menu/issues"
   },
-  "homepage": "https://github.com/paketacredito/live-coding-boiler-plate#readme",
+  "homepage": "https://github.com/ThalesAbdon/desafio-menu#readme",
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/jest": "^29.5.12",
