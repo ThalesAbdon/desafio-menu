@@ -22,13 +22,13 @@ documenta as decisões técnicas tomadas nesta solução.
 | GET    | `/health`              | Verifica se a API e a conexão com o Mongo estão de pé |
 
 ### POST /api/v1/menu
-\`\`\`json
+```json
 // body
 { "name": "Televisores", "relatedId": "64f1c2b1e4b0a1a2b3c4d5e6" }
 
 // 201
 { "id": "64f1c2b1e4b0a1a2b3c4d5e7" }
-\`\`\`
+```
 - `name` é obrigatório e único.
 - `relatedId` é opcional. Se informado, precisa apontar para um item existente
   (retorna `400` caso contrário).
@@ -43,9 +43,9 @@ partir dos documentos "flat" armazenados no Mongo.
 
 ## Arquitetura
 
-\`\`\`
+```
 routes → validation → controller → service → model
-\`\`\`
+```
 
 O boilerplate original usa *fat controller* (controller falando direto com o
 model). Optei por extrair a lógica de negócio para uma camada `services/`,
