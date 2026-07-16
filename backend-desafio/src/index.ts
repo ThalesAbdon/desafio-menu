@@ -10,8 +10,13 @@ const HOST = process.env.HOST || 'https://localhost'
 const PORT = process.env.PORT || 8000
 const LOGMSG = '⚡️[Paketá Credito Live-Coding BoilerPlate]:'
 
+const MONGO_HOST = process.env.MONGO_HOST || 'localhost'
+const MONGO_PORT = process.env.MONGO_PORT || '27017'
+const MONGO_DATABASE = process.env.MONGO_DATABASE || 'local'
+const MONGO_URL = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`
+
 mongoose.connect(
-    process.env.MONGO_URL || 'mongodb://localhost:27017/local',
+    MONGO_URL,
     {},
     err => {
         const msg = err
